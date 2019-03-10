@@ -9,9 +9,4 @@ router.post('/login', (req, res) => {
 	controller.findUser(req, res);
 });
 
-
-router.get('/', (req, res) => {
-    res.send('this is working');
-})
-
 module.exports = router;

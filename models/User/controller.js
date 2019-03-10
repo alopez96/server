@@ -1,7 +1,7 @@
 const User = require('./model'); 
 const bcrypt = require('bcrypt');
 
-const numberOfSaltIterations = 12;
+const saltRound = 12;
 
 //register a new user to mongoDB
 exports.createUser = (req, res) => {
@@ -20,13 +20,13 @@ exports.createUser = (req, res) => {
         });
 
         // Hashes the user's password
-        bcrypt.hash(password, numberOfSaltIterations, function (err, hash) {
+        bcrypt.hash(password, saltRound, function (err, hash) {
           if (err) throw err;
           newUser.password = hash;
           // Push new user onto db if successful, else display error
-          newUser.save().then(user => 
-            res.status(201).json({ 'user': user }))
-            .catch(err => console.log(err));
+          newUser.save()
+          .then(user => res.json(user))
+          .catch( err => { res.status(400).json('error getting user')})
         });
       }
     });
@@ -35,6 +35,7 @@ exports.createUser = (req, res) => {
   }
 };
 
+//find user for login
 exports.findUser = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email: email }).then((user) => {
