@@ -6,7 +6,7 @@ const saltRound = 12;
 //register a new user to mongoDB
 exports.createUser = (req, res) => {
   // Destructuring the req.body
-  const { name, email, password } = req.body;
+  const { name, email, password, joined } = req.body;
   if (name && email && password) {
     User.findOne({ email: email }).then((user) => {
       if (user) { // If the user already exists, reject duplicate account
@@ -16,7 +16,8 @@ exports.createUser = (req, res) => {
         let newUser = new User({
           name: name,
           email: email,
-          password: password
+          password: password,
+          joined: joined
         });
 
         // Hashes the user's password

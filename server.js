@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const { mongoURI } = require('./keys');
 const userRoutes = require('./models/User/routes');
+const postRoutes = require('./models/Posts/routes');
 
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
@@ -18,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev')); //debugging for HTTP requests
 
-app.use('/', [userRoutes]);
+app.use('/', [userRoutes, postRoutes]);
 
 app.listen(3000, () => {
     console.log('app is running on port 3000');
