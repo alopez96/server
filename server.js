@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const { mongoURI } = require('./keys');
+const loginRoutes = require('./models/User/routes');
 
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
@@ -18,12 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev')); //debugging for HTTP requests
 
-app.get('/', (req, res) => {
-    res.send('this is working');
-})
-
-//register user
-app.post('/register', (req,res) => { register.handleRegister(req, res, db, bcrypt) });
+app.use('/', [loginRoutes]);
 
 app.listen(3000, () => {
     console.log('app is running on port 3000');
