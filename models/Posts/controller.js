@@ -4,11 +4,12 @@ const bcrypt = require('bcrypt');
 //new post to mongoDB
 exports.createPost = (req, res) => {
   // destructure the req.body
-  const { user, description, imageurl, postDate } = req.body;
+  const { user, category, description, imageurl, postDate } = req.body;
   if (user && description) {
     // create new post
     let newPost = new User({
         user: user,
+        category,
         description: description,
         imageurl: imageurl,
         postDate: postDate
