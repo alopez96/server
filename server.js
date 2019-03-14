@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { mongoURI } = require('./keys');
 const userRoutes = require('./models/User/routes');
 const postRoutes = require('./models/Posts/routes');
+const schoolRoutes = require('./models/Schools/routes');
 
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
@@ -19,7 +20,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev')); //debugging for HTTP requests
 
-app.use('/', [userRoutes, postRoutes]);
+app.use('/', [userRoutes, postRoutes, schoolRoutes]);
 
 app.listen(3000, () => {
     console.log('app is running on port 3000');
