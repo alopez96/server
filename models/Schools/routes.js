@@ -7,8 +7,13 @@ router.post('/newSchool', (req, res) => {
 });
 
 //get schools
-router.get('/getSChool/:category', (req, res) => {
+router.get('/getSChools/:category', (req, res) => {
 	controller.getSchools(req, res);
+});
+
+//get schools
+router.get('/school/:name', (req, res) => {
+	controller.findSchool(req, res);
 });
 
 module.exports = router;

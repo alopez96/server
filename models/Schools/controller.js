@@ -28,7 +28,6 @@ exports.newSchool = (req, res) => {
 exports.getSchools = (req, res) => {
   const { category } = req.params;
   School.find({ category: category }).then((school) => {
-    //validate username and password
     if (!school) {
       return res.status(400).json({ 'Error': 'school does not exist' });
     } else {
@@ -37,11 +36,10 @@ exports.getSchools = (req, res) => {
     }).catch((err) => console.log(err));
 }
 
-//find schools
+//find school with keyword match
 exports.findSchool = (req, res) => {
-  const { name, category } = req.params;
-  School.find({$or: [{'name': {'$regex': name}}, { category: category }] }).then((school) => {
-    //validate username and password
+  const { name } = req.params;
+  School.find({name:{'$regex' : name, '$options' : 'i'}}).then((school) => {
     if (!school) {
       return res.status(400).json({ 'Error': 'school does not exist' });
     } else {
