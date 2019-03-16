@@ -19,6 +19,10 @@ const User = new Schema({
   },
   joined: {
     type: Date
+  },
+  safe:{
+    type: Schema.Types.ObjectId,
+    ref: 'sales'
   }
 });
 
