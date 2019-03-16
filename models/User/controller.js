@@ -72,14 +72,12 @@ exports.editProfile = (req, res) => {
 				mongoose.Types.ObjectId(id),
 				{ $set: updatedProfile },
 				{ new: true }
-			).then((user) => {
-				User.findById(user._id).populate('imageurl').then((user) => {
+			).then((user) => {	
 					if (user)
 						return res.status(200).json({ 'user': user });
 					else
 						return res.status(400).json({ 'err': 'err' })
 				}).catch(err => console.log(err));
-			})
 		}
 		else {
 			return res.status(400).json({ 'err': 'err' })
