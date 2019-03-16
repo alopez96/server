@@ -16,4 +16,9 @@ router.put('/user/:id/editProfile', (req, res) => {
 	controller.editProfile(req, res);
 });
 
+//update profile image
+router.put('/user/:id/uploadImage', (req, res) => {
+	controller.profileImage(req, res);
+});
+
 module.exports = router;

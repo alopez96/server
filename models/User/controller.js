@@ -87,3 +87,16 @@ exports.editProfile = (req, res) => {
 
 	}).catch(err => console.log(err));
 }
+
+
+exports.profileImage = (req, res) => {
+  User.findOneAndUpdate({ _id: req.params.id },
+     { $set: { "imageurl": req.body.imageurl } })
+  .then((user) => {
+		if (!user) {
+			return res.status(404).json({ 'Error': 'error', 'imageurl': null });
+		} else {
+			return res.status(200).json({ 'imageurl': req.body.imageurl });
+		}
+	});
+};
