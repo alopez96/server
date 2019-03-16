@@ -1,5 +1,6 @@
 const User = require('./model'); 
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
 const saltRound = 12;
 
@@ -54,4 +55,35 @@ exports.findUser = (req, res) => {
       }).catch((err) => console.log(err));
     }
   });
+}
+
+//edit profile
+exports.editProfile = (req, res) => {
+  const { id } = req.params;
+  const { name, email, bio } = req.body;
+  //find sale, and update
+	User.findById(id).then((profile) => {
+		if (profile) {
+			let updatedProfile = {
+        name, email, bio
+      };
+
+			User.findByIdAndUpdate(
+				mongoose.Types.ObjectId(id),
+				{ $set: updatedProfile },
+				{ new: true }
+			).then((user) => {
+				User.findById(user._id).populate('imageurl').then((user) => {
+					if (user)
+						return res.status(200).json({ 'user': user });
+					else
+						return res.status(400).json({ 'err': 'err' })
+				}).catch(err => console.log(err));
+			})
+		}
+		else {
+			return res.status(400).json({ 'err': 'err' })
+		}
+
+	}).catch(err => console.log(err));
 }

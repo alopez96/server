@@ -7,7 +7,7 @@ router.post('/newSale', (req, res) => {
 });
 
 //edit sale
-router.put('/:id/editSale', (req, res) => {
+router.put('/sales/:id/editSale', (req, res) => {
 	controller.editSale(req, res);
 });
 

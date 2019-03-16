@@ -17,6 +17,12 @@ const User = new Schema({
     type: String,
     required: true
   },
+  imageurl: {
+    type: String
+  },
+  bio: {
+    type: String
+  },
   joined: {
     type: Date
   },

@@ -11,4 +11,9 @@ router.post('/login', (req, res) => {
 	controller.findUser(req, res);
 });
 
+//edit profile
+router.put('/user/:id/editProfile', (req, res) => {
+	controller.editProfile(req, res);
+});
+
 module.exports = router;
