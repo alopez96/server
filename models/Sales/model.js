@@ -14,7 +14,7 @@ const Sale = new Schema({
     type: String,
     required: true
   },
-  school: {
+  schoolid: {
     type: String
   },
   userid: {

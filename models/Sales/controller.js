@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 //new school
 exports.newSale = (req, res) => {
   // destructure the req.body
-  const { title, description, category, school, userid,
+  const { title, description, category, schoolid, userid,
      images, postDate, lastEditDate, sold } = req.body;
   if (title && category) {
     // create new sale
     let newSaleItem = new Sale({
-      title, description, category, school, userid, images,
+      title, description, category, schoolid, userid, images,
       postDate, lastEditDate, sold
       });
       //save new sale to db
@@ -21,18 +21,50 @@ exports.newSale = (req, res) => {
   }
 };
 
+//fetch all items
+exports.getAllItems = (req, res) => {
+  Sale.find().then((sale) => {
+    if (!sale) {
+      return res.status(400).json({ 'Error': 'Item does not exist' });
+    } else {
+      res.json({ sale });
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}
+
+//fetch sale items
+exports.getItems = (req, res) => {
+	const { keyword } = req.params;
+	//query database matching keyword with title, desc, or category
+  Sale.find({$or : [
+		{title:{'$regex' : keyword, '$options' : 'i'}},
+		{description:{'$regex' : keyword, '$options' : 'i'}},
+		{category:{'$regex' : keyword, '$options' : 'i'}}]
+	})
+		.then((sale) => {
+    if (!sale) {
+      return res.status(400).json({ 'Error': 'Item does not exist' });
+    } else {
+      res.json({ sale });
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}
+
 
 //edit sale
 exports.editSale = (req, res) => {
   const { id } = req.params;
-  const { title, description, category, school, userid,
+  const { title, description, category, schoolid, userid,
      images, postDate, lastEditDate, sold } = req.body;
   //find sale, and update
 	Sale.findById(id).then((sale) => {
-		if (sale) {
+		//only modify if user matches user who created sale item
+		if (sale.userid == userid) {
 			let updatedSale = {
-        title, description, category, school, 
-        userid, images, postDate, lastEditDate, sold
+        title, description, category, schoolid, 
+        images, postDate, lastEditDate, sold
 			};
 
 			Sale.findByIdAndUpdate(

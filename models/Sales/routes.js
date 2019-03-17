@@ -6,8 +6,18 @@ router.post('/newSale', (req, res) => {
 	controller.newSale(req, res);
 });
 
+//get all items
+router.get('/getSales', (req, res) => {
+	controller.getAllItems(req, res);
+});
+
+//get items
+router.get('/getSales/:keyword', (req, res) => {
+	controller.getItems(req, res);
+});
+
 //edit sale
-router.put('/sales/:id/editSale', (req, res) => {
+router.put('/editSale/:id', (req, res) => {
 	controller.editSale(req, res);
 });
 
