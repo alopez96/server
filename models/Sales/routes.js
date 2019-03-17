@@ -6,13 +6,13 @@ router.post('/newSale', (req, res) => {
 	controller.newSale(req, res);
 });
 
-//get all items
-router.get('/getSales', (req, res) => {
+//get all items within school
+router.get('/getSales/:schoolid', (req, res) => {
 	controller.getAllItems(req, res);
 });
 
-//get items
-router.get('/getSales/:keyword', (req, res) => {
+//get items with keyword
+router.get('/getSales/:schoolid/:keyword', (req, res) => {
 	controller.getItems(req, res);
 });
 

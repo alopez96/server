@@ -15,10 +15,12 @@ const Sale = new Schema({
     required: true
   },
   schoolid: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'schools'
   },
   userid: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'users'
   },
   images: {
     type: Array

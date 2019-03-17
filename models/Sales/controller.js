@@ -21,32 +21,34 @@ exports.newSale = (req, res) => {
   }
 };
 
-//fetch all items
+//fetch all items within school
 exports.getAllItems = (req, res) => {
-  Sale.find().then((sale) => {
+	const { schoolid } = req.params;
+  Sale.find({schoolid: schoolid}).populate('userid', 'name email imageurl').then((sale) => {
     if (!sale) {
       return res.status(400).json({ 'Error': 'Item does not exist' });
     } else {
-      res.json({ sale });
+      res.json(sale);
     }
 	})
 	.catch( err => { res.status(400).json(err)});
 }
 
-//fetch sale items
+//find items based on keyword
 exports.getItems = (req, res) => {
-	const { keyword } = req.params;
+	const { schoolid, keyword } = req.params;
 	//query database matching keyword with title, desc, or category
-  Sale.find({$or : [
+  Sale.find({$and: [{$or : [
 		{title:{'$regex' : keyword, '$options' : 'i'}},
 		{description:{'$regex' : keyword, '$options' : 'i'}},
 		{category:{'$regex' : keyword, '$options' : 'i'}}]
-	})
-		.then((sale) => {
+	}, {schoolid: schoolid}]})
+	.populate('userid', 'name email imageurl')
+	.then((sale) => {
     if (!sale) {
       return res.status(400).json({ 'Error': 'Item does not exist' });
     } else {
-      res.json({ sale });
+      res.json(sale);
     }
 	})
 	.catch( err => { res.status(400).json(err)});
