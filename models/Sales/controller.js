@@ -1,7 +1,7 @@
 const Sale = require('./model'); 
 const mongoose = require('mongoose');
 
-//new school
+//new sale
 exports.newSale = (req, res) => {
   // destructure the req.body
   const { title, description, category, schoolid, userid,
@@ -77,15 +77,15 @@ exports.getCategory = (req, res) => {
 //edit sale
 exports.editSale = (req, res) => {
   const { id } = req.params;
-  const { title, description, category, schoolid, userid,
-     images, postDate, lastEditDate, sold } = req.body;
+  const { title, description, category, userid,
+     image, lastEditDate } = req.body;
   //find sale, and update
 	Sale.findById(id).then((sale) => {
 		//only modify if user matches user who created sale item
 		if (sale.userid == userid) {
 			let updatedSale = {
-        title, description, category, schoolid, 
-        images, postDate, lastEditDate, sold
+        title, description, category, userid,
+     		image, lastEditDate
 			};
 
 			Sale.findByIdAndUpdate(
