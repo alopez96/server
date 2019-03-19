@@ -17,7 +17,7 @@ router.get('/getSales/:schoolid/:keyword', (req, res) => {
 });
 
 //get items within category
-router.get('/getSalesCategory/:schoolid', (req, res) => {
+router.get('/getSalesCategory/:schoolid/:category', (req, res) => {
 	controller.getCategory(req, res);
 });
 

@@ -24,7 +24,8 @@ exports.newSale = (req, res) => {
 //fetch all items within school
 exports.getAllItems = (req, res) => {
 	const { schoolid } = req.params;
-  Sale.find({schoolid: schoolid}).populate('userid', 'name email imageurl').then((sale) => {
+	Sale.find({schoolid: schoolid}).sort({postDate: -1})
+	.populate('userid', 'name email imageurl').then((sale) => {
     if (!sale) {
       return res.status(400).json({ 'Error': 'Item does not exist' });
     } else {
@@ -42,7 +43,7 @@ exports.getItems = (req, res) => {
 		{title:{'$regex' : keyword, '$options' : 'i'}},
 		{description:{'$regex' : keyword, '$options' : 'i'}},
 		{category:{'$regex' : keyword, '$options' : 'i'}}]
-	}, {schoolid: schoolid}]})
+	}, {schoolid: schoolid}]}).sort({postDate: -1})
 	.populate('userid', 'name email imageurl')
 	.then((sale) => {
     if (!sale) {
@@ -56,12 +57,11 @@ exports.getItems = (req, res) => {
 
 //find items within category
 exports.getCategory = (req, res) => {
-	const { schoolid } = req.params;
-	const { category } = req.body;
+	const { schoolid, category } = req.params;
 	//query database matching keyword with title, desc, or category
-	Sale.find({$and: [{$or : 
-		[{category:{'$regex' : category, '$options' : 'i'}}]
-	}, {schoolid: schoolid}]})
+	Sale.find({$and: 
+		[{category:{'$regex' : category, '$options' : 'i'}},
+		{schoolid: schoolid}]}).sort({postDate: -1})
 	.populate('userid', 'name email imageurl')
 	.then((sale) => {
     if (!sale) {
