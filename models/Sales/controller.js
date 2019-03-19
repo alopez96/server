@@ -5,11 +5,11 @@ const mongoose = require('mongoose');
 exports.newSale = (req, res) => {
   // destructure the req.body
   const { title, description, category, schoolid, userid,
-     images, postDate, lastEditDate, sold } = req.body;
+     image, postDate, lastEditDate, sold } = req.body;
   if (title && category) {
     // create new sale
     let newSaleItem = new Sale({
-      title, description, category, schoolid, userid, images,
+      title, description, category, schoolid, userid, image,
       postDate, lastEditDate, sold
       });
       //save new sale to db
@@ -42,6 +42,25 @@ exports.getItems = (req, res) => {
 		{title:{'$regex' : keyword, '$options' : 'i'}},
 		{description:{'$regex' : keyword, '$options' : 'i'}},
 		{category:{'$regex' : keyword, '$options' : 'i'}}]
+	}, {schoolid: schoolid}]})
+	.populate('userid', 'name email imageurl')
+	.then((sale) => {
+    if (!sale) {
+      return res.status(400).json({ 'Error': 'Item does not exist' });
+    } else {
+      res.json(sale);
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}
+
+//find items within category
+exports.getCategory = (req, res) => {
+	const { schoolid } = req.params;
+	const { category } = req.body;
+	//query database matching keyword with title, desc, or category
+	Sale.find({$and: [{$or : 
+		[{category:{'$regex' : category, '$options' : 'i'}}]
 	}, {schoolid: schoolid}]})
 	.populate('userid', 'name email imageurl')
 	.then((sale) => {

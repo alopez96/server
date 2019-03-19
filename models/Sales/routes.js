@@ -16,6 +16,11 @@ router.get('/getSales/:schoolid/:keyword', (req, res) => {
 	controller.getItems(req, res);
 });
 
+//get items within category
+router.get('/getSalesCategory/:schoolid', (req, res) => {
+	controller.getCategory(req, res);
+});
+
 //edit sale
 router.put('/editSale/:id', (req, res) => {
 	controller.editSale(req, res);

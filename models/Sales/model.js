@@ -22,8 +22,8 @@ const Sale = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  images: {
-    type: Array
+  image: {
+    type: String
   },
   postDate: {
     type: String
