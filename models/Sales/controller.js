@@ -84,7 +84,7 @@ exports.editSale = (req, res) => {
 		//only modify if user matches user who created sale item
 		if (sale.userid == userid) {
 			let updatedSale = {
-        title, description, category, userid,
+        title, description, category, 
      		image, lastEditDate
 			};
 
@@ -111,7 +111,9 @@ exports.editSale = (req, res) => {
 //mark item as sold
 exports.markSold = (req, res) => {
   const { id } = req.params;
-  Sale.findOneAndUpdate({ _id: id }, { $set: { 'sold': true } })
+  Sale.findOneAndUpdate(
+		{$and: [{ _id: id}, {userid: userid}]}, 
+		{ $set: { 'sold': true } })
   .then((sale) => {
 		if (!sale) {
 			return res.status(404).json({ 'Error': 'error', 'sold': null });
@@ -123,13 +125,14 @@ exports.markSold = (req, res) => {
 
 //remove item from sale list
 exports.removeSale = (req, res) => {
-  const { id } = req.params;
-  Sale.deleteOne({ _id: id })
+	const { id } = req.params;
+	const { userid } = req.body;
+  Sale.deleteOne({$and: [{ _id: id}, {userid: userid}]})
   .then((response) => {
 		if (!response) {
 			return res.status(404).json({ 'Error': 'error', 'sold': null });
 		} else {
-			return res.status(201).json({ 'deleted': true });
+			return res.status(201).json({ 'deleted': response.deletedCount });
 		}
   })
   .catch(err => res.status(400).json(err));
