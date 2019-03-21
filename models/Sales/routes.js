@@ -36,4 +36,9 @@ router.put('/sales/:id/removeSale', (req, res) => {
 	controller.removeSale(req, res);
 });
 
+//get list of categories
+router.get('/getCategories/:schoolid', (req, res) => {
+	controller.getListOfCategories(req, res);
+});
+
 module.exports = router;

@@ -137,3 +137,19 @@ exports.removeSale = (req, res) => {
   })
   .catch(err => res.status(400).json(err));
 }
+
+//get list of categories
+exports.getListOfCategories = (req, res) => {
+	const { schoolid } = req.params;
+	//query database to find categories
+	//use distict to avoid duplicate category entries
+	Sale.find({schoolid: schoolid}).distinct('category')
+	.then((sale) => {
+    if (!sale) {
+      return res.status(400).json({ 'Error': 'Item does not exist' });
+    } else {
+      res.json(sale);
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}
