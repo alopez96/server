@@ -4,13 +4,14 @@ const Schema = mongoose.Schema;
 
 const Post = new Schema({
   user: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'users'
   },
-  category: {
-    type: String
+  school: {
+    type: Schema.Types.ObjectId,
+    ref: 'schools'
   },
-  description: {
+  body: {
     type: String,
     required: true
   },
@@ -18,8 +19,12 @@ const Post = new Schema({
     type: String
   },
   postDate: {
-    type: Date
-  }
+    type: Date,
+    required: true
+  },
+  editDate: {
+    type: Date, 
+  },
 });
 
 module.exports = mongoose.model('posts', Post);
