@@ -25,6 +25,10 @@ const Post = new Schema({
   editDate: {
     type: Date, 
   },
+  likeList: [{
+    type: Schema.Types.ObjectId,
+    ref: 'users'
+  }]
 });
 
 module.exports = mongoose.model('posts', Post);

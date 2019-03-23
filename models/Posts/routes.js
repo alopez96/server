@@ -17,8 +17,13 @@ router.put('/deletePost/:id', (req, res) => {
 });
 
 //fetch all post
-router.get('/getAllPosts', (req, res) => {
+router.get('/getPosts/:school', (req, res) => {
 	controller.getPosts(req, res);
+});
+
+//like post
+router.put('/likePost/:id', (req, res) => {
+	controller.likePost(req, res);
 });
 
 

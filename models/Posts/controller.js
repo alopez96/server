@@ -66,3 +66,68 @@ exports.removePost = (req, res) => {
   })
   .catch(err => res.status(400).json(err));
 }
+
+//fetch all posts
+exports.getPosts = (req, res) => {
+	const { school } = req.params;
+	Post.find({school: school}).sort({postDate: -1})
+	.populate('user', 'name email imageurl').then((post) => {
+    if (post) {
+      //successful
+      res.json(post);
+    } else {
+      //error
+      return res.status(400).json({'error': post});
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}
+
+//like post
+exports.likePost = (req, res) => {
+  //get postid
+  const { id } = req.params;
+  //deconstruct the body to get userid
+  const { user } = req.body;
+  //find post, and update
+  Post.findByIdAndUpdate(mongoose.Types.ObjectId(id))
+  .then((post) => {
+    if(post){
+      //get list of likes
+      var currentLikes = post.likeList;
+      //check if the user has already liked
+      var hasLiked = currentLikes.some(function (liked) {
+				return liked.equals(user);
+      });
+      //user has liked -> remove user from likeList
+			if (currentLikes.length > 0 && hasLiked) {
+        Post.findOneAndUpdate(
+					{ _id: id },
+					{ $pull: { likeList: mongoose.Types.ObjectId(user) } },
+					{ new: true, upsert: true },
+					function (error, event) {
+						if (error) {
+							console.log(error);
+						} else {
+							return res.status(201).json({ event });
+						}
+					});
+      } else {
+        //user has not liked -> add user to likeList
+				Post.findOneAndUpdate(
+					{ _id: id },
+					{ $push: { likeList: mongoose.Types.ObjectId(user) } },
+					{ new: true, upsert: true },
+					function (error, event) {
+						if (error) {
+							return res.status(400).json({'error': error})
+						} else {
+							return res.status(200).json({ event });
+						}
+					});
+      }
+    }
+    else
+      return res.status(400).json({ 'err': 'err' })
+  }).catch(err => console.log(err));
+}
