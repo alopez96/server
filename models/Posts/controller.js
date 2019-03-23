@@ -22,8 +22,7 @@ exports.createPost = (req, res) => {
 //edit post
 exports.editPost = (req, res) => {
   const { id } = req.params;
-  const { user, body,
-     imageurl, editDate } = req.body;
+  const { user, body, imageurl, editDate } = req.body;
   //find post, and update
 	Post.findById(id).then((post) => {
 		//only modify if user matches user who created sale item
@@ -50,5 +49,20 @@ exports.editPost = (req, res) => {
 	}).catch(err => console.log(err));
 }
 
-
-//find posts on keyword search
+//delete post from db
+exports.removePost = (req, res) => {
+	const { id } = req.params;
+  const { user } = req.body;
+  console.log(id, user)
+  Post.deleteOne({$and: [{ _id: id}, {user: user}]})
+  .then((response) => {
+		if (response) {
+      //return success
+			return res.status(200).json({ 'deleted': response.deletedCount });
+		} else {
+      //return error
+			return res.status(404).json({ 'Error': 'error', 'post': null });
+		}
+  })
+  .catch(err => res.status(400).json(err));
+}

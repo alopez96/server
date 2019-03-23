@@ -12,7 +12,7 @@ router.put('/editPost/:id', (req, res) => {
 });
 
 //delete post
-router.put('/deletePost/:postid', (req, res) => {
+router.put('/deletePost/:id', (req, res) => {
 	controller.removePost(req, res);
 });
 
