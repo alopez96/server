@@ -12,7 +12,7 @@ exports.createPost = (req, res) => {
       });
       //save new post to db
       newPost.save()
-        .then(post => res.status(200).json(post))
+        .then(post => res.status(200).json({post}))
         .catch( err => { res.status(400).json(err)})
   } else {
     return res.status(400).json({ 'Error': 'Missing fields' });

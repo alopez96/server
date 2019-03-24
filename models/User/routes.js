@@ -21,4 +21,7 @@ router.put('/user/:id/uploadImage', (req, res) => {
 	controller.profileImage(req, res);
 });
 
+router.get('/getUser/:id', (req, res) => {
+	controller.getUser(req,res);
+})
 module.exports = router;
