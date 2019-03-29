@@ -1,5 +1,4 @@
 const Post = require('./model');
-const User = require('./../User/model');
 const mongoose = require('mongoose');
 
 //new post to mongoDB
@@ -37,16 +36,8 @@ exports.editPost = (req, res) => {
 				{ $set: updatedPost },
 				{ new: true }
 			).then((post) => {
-        if (post){
-          console.log('find user', post.user)
-            User.findById(post.user).then((user) => {
-              post.user = {
-                _id: user._id,
-                name: user.name
-              }
-              return res.status(200).json({ 'post': post });
-            }).catch(err => console.log(err));
-        }
+        if (post)
+						return res.status(200).json({ 'post': post });
 					else
 						return res.status(400).json({ 'err': 'err' })
 			}).catch(err => console.log(err));
@@ -119,7 +110,7 @@ exports.likePost = (req, res) => {
 						if (error) {
 							console.log(error);
 						} else {
-							return res.status(201).json({ event });
+							return res.status(200).json({ event });
 						}
 					});
       } else {
