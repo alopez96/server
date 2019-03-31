@@ -94,7 +94,7 @@ exports.profileImage = (req, res) => {
 		if (!user) {
 			return res.status(404).json({ 'Error': 'error', 'imageurl': null });
 		} else {
-			return res.status(200).json({ 'imageurl': req.body.imageurl });
+			return res.status(200).json({ user });
 		}
 	});
 };
