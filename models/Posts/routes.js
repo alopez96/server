@@ -26,5 +26,10 @@ router.put('/likePost/:id', (req, res) => {
 	controller.likePost(req, res);
 });
 
+//fetch all post from a specific user
+router.get('/userPosts/:user', (req, res) => {
+	controller.getUserPosts(req, res);
+});
+
 
 module.exports = router;

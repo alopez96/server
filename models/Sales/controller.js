@@ -153,3 +153,19 @@ exports.getListOfCategories = (req, res) => {
 	})
 	.catch( err => { res.status(400).json(err)});
 }
+
+//fetch all posts from a specific user
+exports.getUserSales = (req, res) => {
+	const { userid } = req.params;
+	Sale.find({userid: userid}).sort({postDate: -1})
+	.then((sales) => {
+    if (sales) {
+      //successful
+      res.json(sales);
+    } else {
+      //error
+      return res.status(400).json({'error': sales});
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}

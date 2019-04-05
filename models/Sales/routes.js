@@ -41,4 +41,9 @@ router.get('/getCategories/:schoolid', (req, res) => {
 	controller.getListOfCategories(req, res);
 });
 
+//get items posted by specific user
+router.get('/userSales/:userid', (req, res) => {
+	controller.getUserSales(req, res);
+});
+
 module.exports = router;

@@ -132,3 +132,20 @@ exports.likePost = (req, res) => {
       return res.status(400).json({ 'err': 'err' })
   }).catch(err => console.log(err));
 }
+
+
+//fetch all posts from a specific user
+exports.getUserPosts = (req, res) => {
+	const { user } = req.params;
+	Post.find({user: user}).sort({postDate: -1})
+	.then((posts) => {
+    if (posts) {
+      //successful
+      res.json(posts);
+    } else {
+      //error
+      return res.status(400).json({'error': posts});
+    }
+	})
+	.catch( err => { res.status(400).json(err)});
+}
