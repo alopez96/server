@@ -103,7 +103,7 @@ exports.profileImage = (req, res) => {
 //get user info
 exports.getUser = (req, res) => {
   const { id } = req.params;
-  User.findById(id).then((profile) => {
+  User.findById({_id: id}).then((profile) => {
     if(profile){
       return res.status(200).json(profile)
     }
